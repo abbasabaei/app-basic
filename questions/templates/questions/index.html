@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questionnaire</title>
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+        {% if option == 'yes' %}
+            {% if check.next_yes or check.next_no %}
+                <h1>{{ answer.next_yes}}</h1>
+                <form action="{% url 'questions:process_response' answer.next_yes %}" method="post" id="responseForm">
+                    {% csrf_token %}
+                    <button type="submit" name="option" value="yes">Yes</button>
+                    <button type="submit" name="option" value="no">No</button>
+                </form>
+            {% elif check.next %}
+                <h1>{{ answer.next_yes }}</h1>
+                <form action="{% url 'questions:process_response' answer.next_yes %}" method="post" id="responseForm">
+                    {% csrf_token %}
+                    <button type="submit" name="option" value="next">Next</button>
+                </form>
+            {% else %}
+                <h1>{{ answer.next_yes}}</h1>
+                {% if check.mail or check.sms%}
+                    <form action="{% url 'questions:send_email' check.mail check.sms %}" method="post" id="responseForm">
+                        {% csrf_token %}
+                        <p>Please <button type="submit">submit </button> the results.</p>
+                    </form>
+                {% else %}
+                    <p>Thank you. <a href="{% url 'homepage' %}">back </a> to home.</p>
+                {% endif %}
+            {% endif %}
+        {% elif option == 'no' %}
+            {% if check.next_yes or check.next_no %}
+                <h1>{{ answer.next_no }}</h1>
+                <form action="{% url 'questions:process_response' answer.next_no %}" method="post" id="responseForm">
+                    {% csrf_token %}
+                    <button type="submit" name="option" value="yes">Yes</button>
+                    <button type="submit" name="option" value="no">No</button>
+                </form>
+            {% elif check.next %}
+                <h1>{{ answer.next_no }}</h1>
+                <form action="{% url 'questions:process_response' answer.next_no %}" method="post" id="responseForm">
+                    {% csrf_token %}
+                    <button type="submit" name="option" value="next">Next</button>
+                </form>
+            {% else %}
+                <h1>{{ answer.next_no }}</h1>
+                {% if check.mail or check.sms%}
+                    <form action="{% url 'questions:send_email' check.mail check.sms %}" method="post" id="responseForm">
+                        {% csrf_token %}
+                        <p>Please <button type="submit">submit </button> the results.</p>
+                    </form>
+                {% else %}
+                    <p>Thank you. <a href="{% url 'homepage' %}">back </a> to home.</p>
+                {% endif %}
+            {% endif %}
+        {% elif option == 'next' %}
+            {% if check.next_yes or check.next_no %}
+                <h1>{{ answer.next }}</h1>
+                <form action="{% url 'questions:process_response' answer.next %}" method="post" id="responseForm">
+                    {% csrf_token %}
+                    <button type="submit" name="option" value="yes">Yes</button>
+                    <button type="submit" name="option" value="no">No</button>
+                </form>
+            {% elif check.next %}
+                <h1>{{ answer.next }}</h1>
+                <form action="{% url 'questions:process_response' answer.next %}" method="post" id="responseForm">
+                    {% csrf_token %}
+                    <button type="submit" name="option" value="next">Next</button>
+                </form>
+            {% else %}
+                <h1>{{ answer.next }}</h1>
+                {% if check.mail or check.sms%}
+                <form action="{% url 'questions:send_email' check.mail check.sms %}" method="post" id="responseForm">
+                    {% csrf_token %}
+                    <p>Please <button type="submit">submit </button> the results.</p>
+                </form>
+                {% else %}
+                    <p>Thank you. <a href="{% url 'homepage' %}">back </a> to home.</p>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <h1>{{ answer.question_text }}</h1>
+            <form action="{% url 'questions:process_response' answer.question_text %}" method="post" id="responseForm">
+                {% csrf_token %}
+                <button type="submit" name="option" value="yes">Yes</button>
+                <button type="submit" name="option" value="no">No</button>
+            </form>
+        {% endif %}
+    {% else %}
+    <p>Please <a href="{% url 'signin' %}">sign in</a> to continue.</p>
+    {% endif %}
+</body>
+</html>

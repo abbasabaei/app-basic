@@ -1,0 +1,1 @@
+web: gunicorn trenching.wsgi
