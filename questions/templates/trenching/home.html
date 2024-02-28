@@ -5,13 +5,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 50px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+        li {
+            ont-size: 20px;
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 20px;
+            font-weight: normal;
+            transition: color 0.3s ease;
+
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Trenching Application</h1>
-    <ul>
-        <li><a href="{% url 'questions:index' %}">Start</a></li>
-        <li><a href="{% url 'signin' %}">Sign In</a></li>
-        <li><a href="{% url 'signup' %}">Sign Up</a></li>
-    </ul>
+    {% if request.user.is_authenticated %}
+        <div class="container">
+            <h1> Dear {{ request.user.username }}, Welcome to Our Trenching Application.</h1>
+            <div>
+                <a href="{% url 'questions:index' %}">Start</a>
+            </div>
+            <div>
+                <a href="{% url 'logout' %}" class="button">Log Out</a>
+            </div>
+        </div>
+    {% else %}
+        <h1> Please <a href="{% url 'signin' %}">Sign-in</a> / <a href="{% url 'signup' %}">Sign-up</a> to Use Our Trenching Application.</h1>
+    {% endif %}
+
 </body>
 </html>

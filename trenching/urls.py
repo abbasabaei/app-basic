@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('questions/',include('questions.urls', namespace='questions')),
     path('signup/',views.sign_up,name='signup'),
+    path('logout/', views.logout_view, name='logout'),
     
 ]
